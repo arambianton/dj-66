@@ -8,7 +8,7 @@
 
 Путь к файлу хранится в настройках `settings.BUS_STATION_CSV`.
 
-Для чтения csv файла можете использовать [DictReader](https://docs.python.org/3/library/csv.html#csv.DictReader) и учтите, что файл в кодировке `utf-8`.
+Для чтения csv файла можете использовать [DictReader](https://docs.python.or#g/3/library/csv.html#csv.DictReader) и учтите, что файл в кодировке `utf-8`.
 
 ![Пример результата](./res/result.png)
 
