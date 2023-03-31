@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, AdvertisementStatusChoices
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -35,11 +35,22 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         # через методы ViewSet.
         # само поле при этом объявляется как `read_only=True`
         validated_data["creator"] = self.context["request"].user
+        print('Validated_data: {}'.format(validated_data))
         return super().create(validated_data)
 
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
+        request = self.context.get('request')
 
-        # TODO: добавьте требуемую валидацию
+        if request.method in ["POST", "PATCH", "DELETE"]:
+            user = self.context["request"].user
 
+            if request.method in ["POST"]:
+                data['status'] = AdvertisementStatusChoices.OPEN
+
+            if data['status'] == AdvertisementStatusChoices.OPEN:
+                open_ads_count = Advertisement.objects.filter(creator=user, status='OPEN').count() + 1
+                if open_ads_count > 10:
+                    raise serializers.ValidationError('You can`t have more than 10 opened advertisements at the same time')
+                
         return data
