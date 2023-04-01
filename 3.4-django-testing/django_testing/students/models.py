@@ -7,6 +7,7 @@ class Student(models.Model):
 
     birth_date = models.DateField(
         null=True,
+        auto_now_add=True
     )
 
 
