@@ -57,7 +57,7 @@ def test_filter_id(api_class, course_bakery):
 def test_filter_name(api_class, course_bakery):
     courses = course_bakery(_quantity=10)
     course = courses[0]
-    response = api_class.get("/api/v1/courses/?name={}".format(course.name))
+    response = api_class.get("/api/v1/courses/", {"name": course.name})
     assert response.status_code == 200
     data = response.json()
     assert data[0]['name'] == course.name and data[0]['students'] == list(course.students.values_list('name', flat=True))
