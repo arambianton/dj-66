@@ -30,10 +30,10 @@ def json_data(student_bakery):
 @pytest.mark.django_db
 def test_first_course(api_class, course_bakery):
     course = course_bakery(_quantity=1)[0]
-    response = api_class.get("/api/v1/courses/")
+    response = api_class.get("/api/v1/courses/{}/".format(course.id))
     assert response.status_code == 200
     data = response.json()
-    assert data[0]['name'] == course.name
+    assert data['name'] == course.name
 
 @pytest.mark.django_db
 def test_all_courses(api_class, course_bakery):
@@ -67,7 +67,6 @@ def test_create_course(api_class, json_data):
     response = api_class.post("/api/v1/courses/", json_data)
     assert response.status_code == 201
     data = response.json()
-    print(data['name'], json_data['name'])
     assert data['name'] == json_data['name']
 
 @pytest.mark.django_db

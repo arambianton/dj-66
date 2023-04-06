@@ -25,7 +25,7 @@ class StockProduct(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        # related_name='positions',
+        related_name='positions',
     )
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(
