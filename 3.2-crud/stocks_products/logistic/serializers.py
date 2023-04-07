@@ -23,7 +23,6 @@ class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
         fields = ['address', 'positions']
-        read_only_fields = ('stock',)
     
     # positions = ProductPositionSerializer(many=True)
     # настройте сериализатор для склада 
