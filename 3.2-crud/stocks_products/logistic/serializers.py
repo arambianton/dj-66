@@ -12,17 +12,18 @@ class ProductPositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockProduct
         fields = '__all__'
-        read_only_fields = ('stock',)
+        
 
 
 class StockSerializer(serializers.ModelSerializer):
     positions = ProductPositionSerializer(
-        many=True, read_only=True)
+        many=True)
     
 
     class Meta:
         model = Stock
         fields = ['address', 'positions']
+        read_only_fields = ('stock',)
     
     # positions = ProductPositionSerializer(many=True)
     # настройте сериализатор для склада 
@@ -30,7 +31,7 @@ class StockSerializer(serializers.ModelSerializer):
         stock = super().create(validated_data)
         positions = validated_data.pop('positions')
         for position in positions:
-            StockProduct.objects.update_or_create(stock=stock, **position)
+            StockProduct.objects.get_or_create(stock=stock, **position)
         return stock
             
 #    def update(self, instance, validated_data):
